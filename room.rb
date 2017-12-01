@@ -5,7 +5,7 @@ class Room
   def initialize(name, capacity, entrance_fee, playlist)
     @name = name
     @capacity = capacity
-    @entrance_fee = entrance_fee
+    @entrance_fee = entrance_fee.to_i
     @playlist = playlist || []
     @guests = []
     @till = 0
@@ -25,8 +25,10 @@ class Room
 
   def checkin_guest(guest)
     return if capacity_met?
+    return if !guest_can_afford?(guest)
     @guests << guest
-    @till += guest.wallet
+    guest.pay_entrance_fee(self)
+    @till += @entrance_fee
   end
 
   def find_guest(guest_to_find)
@@ -36,9 +38,5 @@ class Room
   def checkout_guest(guest)
     @guests.delete(find_guest(guest)) if @guests.include?(guest)
   end
-
-
-
-  # def payment - only take off money if below capacity (allowed in) and if can afford
 
 end
