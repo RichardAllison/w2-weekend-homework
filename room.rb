@@ -14,8 +14,16 @@ class Room
   end
 
   def checkin_guest(guest)
-    return if @guests.length > @capacity
+    return if @guests.length >= @capacity
     @guests << guest
+  end
+
+  def find_guest(person)
+    return guests.find { |guest| guest == person }
+  end
+
+  def checkout_guest(guest)
+    @guests.delete(find_guest(guest)) if @guests.include?(guest)
   end
 
 end

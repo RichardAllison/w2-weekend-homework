@@ -32,6 +32,11 @@ class TestRoom < MiniTest::Test
     assert_equal(1, @big_room.guests.length)
   end
 
+  def test_room_can_find_guest
+    @big_room.checkin_guest(@guest1)
+    assert_equal(@guest1, @big_room.find_guest(@guest1))
+  end
+
   def test_room_will_not_exceed_capacity
     @small_room.checkin_guest(@guest1)
     @small_room.checkin_guest(@guest2)
@@ -40,6 +45,14 @@ class TestRoom < MiniTest::Test
     @small_room.checkin_guest(@guest5)
     @small_room.checkin_guest(@guest6)
     assert_equal(5, @small_room.guests.length)
+  end
+
+  def test_room_can_checkout_guests
+    @small_room.checkin_guest(@guest1)
+    @small_room.checkin_guest(@guest2)
+    @small_room.checkin_guest(@guest3)
+    @small_room.checkout_guest(@guest2)
+    assert_equal(2, @small_room.guests.length)
   end
 
 
