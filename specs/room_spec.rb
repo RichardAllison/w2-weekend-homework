@@ -8,8 +8,13 @@ class TestRoom < MiniTest::Test
 
   def setup
     @big_room = Room.new("Big room", 50)
-    @small_room = Room.new("Small room", 10)
-    @guest = Guest.new("Richard Allison", 20)
+    @small_room = Room.new("Small room", 5)
+    @guest1 = Guest.new("Richard Allison", 20)
+    @guest2 = Guest.new("Somebody", 20)
+    @guest3 = Guest.new("Somebody", 20)
+    @guest4 = Guest.new("Somebody", 20)
+    @guest5 = Guest.new("Somebody", 20)
+    @guest6 = Guest.new("Somebody", 20)
     @song = Song.new("Random song", "Random artist")
   end
 
@@ -23,8 +28,18 @@ class TestRoom < MiniTest::Test
   end
 
   def test_room_can_checkin_guests
-    @big_room.checkin_guest(@guest)
+    @big_room.checkin_guest(@guest1)
     assert_equal(1, @big_room.guests.length)
+  end
+
+  def test_room_will_not_exceed_capacity
+    @small_room.checkin_guest(@guest1)
+    @small_room.checkin_guest(@guest2)
+    @small_room.checkin_guest(@guest3)
+    @small_room.checkin_guest(@guest4)
+    @small_room.checkin_guest(@guest5)
+    @small_room.checkin_guest(@guest6)
+    assert_equal(5, @small_room.guests.length)
   end
 
 

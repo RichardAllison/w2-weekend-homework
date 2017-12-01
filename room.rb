@@ -14,6 +14,7 @@ class Room
   end
 
   def checkin_guest(guest)
+    return if @guests.length > @capacity
     @guests << guest
   end
 
