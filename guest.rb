@@ -1,10 +1,10 @@
 class Guest
 
-  attr_reader :name, :money
+  attr_reader :name, :wallet
 
-  def initialize(name, money)
+  def initialize(name, wallet)
     @name = name
-    @money = money
+    @wallet = wallet
   end
 
 end

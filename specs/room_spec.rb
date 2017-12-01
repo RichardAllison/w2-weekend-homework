@@ -7,14 +7,14 @@ require_relative("../song.rb")
 class TestRoom < MiniTest::Test
 
   def setup
-    @big_room = Room.new("Big room", 50)
-    @small_room = Room.new("Small room", 5)
-    @guest1 = Guest.new("Richard Allison", 20)
-    @guest2 = Guest.new("Somebody", 20)
-    @guest3 = Guest.new("Somebody", 20)
-    @guest4 = Guest.new("Somebody", 20)
-    @guest5 = Guest.new("Somebody", 20)
-    @guest6 = Guest.new("Somebody", 20)
+    @big_room = Room.new("Big room", 50, 10, [])
+    @small_room = Room.new("Small room", 5, 10, [])
+    @guest1 = Guest.new("Richard", 20)
+    @guest2 = Guest.new("Seamus", 20)
+    @guest3 = Guest.new("David", 20)
+    @guest4 = Guest.new("Andrew", 20)
+    @guest5 = Guest.new("Christopher", 20)
+    @guest6 = Guest.new("Sean", 5)
     @song = Song.new("Random song", "Random artist")
   end
 
@@ -53,7 +53,21 @@ class TestRoom < MiniTest::Test
     @small_room.checkin_guest(@guest3)
     @small_room.checkout_guest(@guest2)
     assert_equal(2, @small_room.guests.length)
+    assert_equal([@guest1, @guest3], @small_room.guests)
   end
+
+  def test_guest_can_afford__true
+    assert_equal(true, @small_room.guest_can_afford?(@guest1))
+  end
+
+  def test_guest_can_afford__false
+    assert_equal(false, @small_room.guest_can_afford?(@guest6))
+  end
+
+  # def test_room_takes_payment
+  #   @big_room.checkin_guest(@guest1)
+  #
+  # end
 
 
 end
