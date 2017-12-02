@@ -8,18 +8,23 @@ require_relative("../bar.rb")
 class TestRoom < MiniTest::Test
 
   def setup
-    @big_room = Room.new("Big room", 50, 10, [])
-    @small_room = Room.new("Small room", 5, 10, [])
+    @song1 = Song.new("Bohemian Rhapsody", "Queen")
+    @song2 = Song.new("Rockin' all over the world","Status Quo")
+    @song3 = Song.new("Blueberry Hill","Fats Domino")
+    @song4 = Song.new("If","Bread")
+    @song5 = Song.new("School's Out","Alice Cooper")
+    songs = [@song1, @song2, @song4, @song5]
+    @big_room = Room.new("Big room", 50, 10, songs)
+    @small_room = Room.new("Small room", 5, 10, songs)
     rooms = [@big_room, @small_room]
     @bar = Bar.new("CodeClan Caraoke Bar", rooms)
-    @guest1 = Guest.new("Richard", 29, 20)
-    @guest2 = Guest.new("Ahmed", 32, 30)
-    @guest3 = Guest.new("Archie", 17, 40)
-    @guest4 = Guest.new("Vladimir", 29, 50)
-    @guest5 = Guest.new("Pedro", 23, 60)
-    @guest6 = Guest.new("Sean", 19, 5)
-    @guest7 = Guest.new("Bob", 40, 70)
-    @song = Song.new("Random song", "Random artist")
+    @guest1 = Guest.new("Richard", 29, 20, "It won't go")
+    @guest2 = Guest.new("Ahmed", 32, 30, "Rockin' all over the world")
+    @guest3 = Guest.new("Archie", 17, 40, "Blueberry Hill")
+    @guest4 = Guest.new("Vladimir", 29, 50, "If")
+    @guest5 = Guest.new("Pedro", 23, 60, "School's out")
+    @guest6 = Guest.new("Sean", 19, 5, "Bohemian Rhapsody")
+    @guest7 = Guest.new("Rob", 40, 70, nil)
   end
 
   def test_room_has_name
@@ -27,8 +32,8 @@ class TestRoom < MiniTest::Test
   end
 
   def test_room_can_add_songs
-    @big_room.add_song_to_playlist(@song)
-    assert_equal([@song], @big_room.playlist)
+    @big_room.add_song_to_playlist(@song3)
+    assert_equal([@song1, @song2, @song4, @song5, @song3], @big_room.playlist)
   end
 
   def test_guest_can_afford__true
@@ -56,6 +61,7 @@ class TestRoom < MiniTest::Test
     @small_room.checkin_guest(@bar, @guest4)
     @small_room.checkin_guest(@bar, @guest5)
     @small_room.checkin_guest(@bar, @guest6)
+    @small_room.checkin_guest(@bar, @guest7)
     assert_equal(5, @small_room.guests.length)
   end
 
