@@ -21,7 +21,7 @@ class TestRoom < MiniTest::Test
     @guest1 = Guest.new("Richard", 29, 20, "It won't go")
     @guest2 = Guest.new("Ahmed", 32, 30, "Rockin' all over the world")
     @guest3 = Guest.new("Archie", 17, 40, "Blueberry Hill")
-    @guest4 = Guest.new("Vladimir", 29, 50, "If")
+    @guest4 = Guest.new("Ivan", 29, 50, "If")
     @guest5 = Guest.new("Pedro", 23, 60, "School's out")
     @guest6 = Guest.new("Sean", 19, 5, "Bohemian Rhapsody")
     @guest7 = Guest.new("Rob", 40, 70, nil)
@@ -34,6 +34,11 @@ class TestRoom < MiniTest::Test
   def test_room_can_add_songs
     @big_room.add_song_to_playlist(@song3)
     assert_equal([@song1, @song2, @song4, @song5, @song3], @big_room.playlist)
+  end
+
+  def test_room_can_remove_songs
+    @big_room.remove_song_from_playlist(@song1)
+    assert_equal([@song2, @song4, @song5], @big_room.playlist)
   end
 
   def test_guest_can_afford__true

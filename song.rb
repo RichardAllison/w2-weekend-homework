@@ -7,8 +7,8 @@ class Song
     @artist = artist
   end
 
-  def play(name)
-    return "Now playing #{name} by #{artist}"
+  def play
+    return "Now playing #{@name} by #{@artist}"
   end
 
 end

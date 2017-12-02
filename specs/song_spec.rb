@@ -17,6 +17,6 @@ class TestSong < MiniTest::Test
   end
 
   def test_song_plays
-    assert_equal("Now playing Random song", @song.play(@song.name))
+    assert_equal("Now playing Random song by Random artist", @song.play)
   end
 end

@@ -1,3 +1,5 @@
+require_relative("song.rb")
+
 class Room
 
   attr_reader :name, :capacity, :playlist, :guests, :entrance_fee, :till
@@ -15,11 +17,8 @@ class Room
     @playlist << song
   end
 
-  def play_playlist
-    return if @playlist = []
-    for current_song in playlist
-      return song.play(current_song)
-    end
+  def remove_song_from_playlist(song)
+    @playlist.delete(song) if @playlist.include?(song)
   end
 
   def capacity_met?

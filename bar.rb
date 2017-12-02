@@ -8,7 +8,6 @@ class Bar
   end
 
   def create_guest_tab(guest, room)
-    # on creating guest tab, add initial room entrance_fee
     @guest_tabs << {
       name: guest.name,
       tab: room.entrance_fee
