@@ -15,20 +15,28 @@ class Room
     @playlist << song
   end
 
+  def play_playlist
+    return if @playlist = []
+    for current_song in playlist
+      return song.play(current_song)
+    end
+  end
+
   def capacity_met?
     return guests.length >= @capacity
   end
 
-  def guest_can_afford?(guest)
+  def guest_can_afford_entrance?(guest)
     return guest.wallet >= @entrance_fee
   end
 
-  def checkin_guest(guest)
+  def checkin_guest(bar, guest)
     return if capacity_met?
-    return if !guest_can_afford?(guest)
+    return if !guest_can_afford_entrance?(guest)
     @guests << guest
     guest.pay_entrance_fee(self)
     @till += @entrance_fee
+    bar.create_guest_tab(guest, self)
   end
 
   def find_guest(guest_to_find)
