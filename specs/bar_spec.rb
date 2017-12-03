@@ -20,7 +20,7 @@ class TestBar < MiniTest::Test
     @coke = Drink.new("Coca Cola", 5, "soft drink", 0)
 
     @pasta = Food.new("Spaghetti", 5, "pasta")
-    @food_not_in_stock = Food.new("", 15, "")
+    @food_not_in_stock = Food.new("Sushi", 15, "sushi")
     @side = Food.new("Chips", 2, "side")
 
     @big_room = Room.new("Big room", 50, 10, [])
