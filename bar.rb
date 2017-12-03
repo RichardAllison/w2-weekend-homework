@@ -42,7 +42,12 @@ class Bar
     guest.age >= 18
   end
 
+  def guest_can_afford_purchase?(guest, order)
+    return guest.wallet >= order.price
+  end
+
   def serve_drink(drink, guest)
+    return if !guest_can_afford_purchase?(guest, drink)
     return if drink.alcohol_content > 0 && !guest_old_enough?(guest)
     if @drinks_stock.include?(drink)
       guest.buy(drink)
@@ -54,6 +59,7 @@ class Bar
   end
 
   def serve_food(food, guest)
+    return if !guest_can_afford_purchase?(guest, food)
     if @food_stock.include?(food)
       guest.buy(food)
       food_sold = find_food_by_name(food.name)

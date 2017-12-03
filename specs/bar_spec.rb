@@ -10,7 +10,7 @@ require_relative("../order.rb")
 class TestBar < MiniTest::Test
 
   def setup
-    @guest1 = Guest.new("Richard", 29, 20, "It won't go")
+    @guest1 = Guest.new("Richard", 29, 10, "It won't go")
     @guest2 = Guest.new("Ahmed", 32, 30, "Rockin' all over the world")
     @guest3 = Guest.new("Archie", 17, 40, "Blueberry Hill")
 
@@ -20,12 +20,13 @@ class TestBar < MiniTest::Test
     @coke = Drink.new("Coca Cola", 5, "soft drink", 0)
 
     @pasta = Food.new("Spaghetti", 5, "pasta")
+    @food_not_in_stock = Food.new("", 15, "")
     @side = Food.new("Chips", 2, "side")
 
     @big_room = Room.new("Big room", 50, 10, [])
     @small_room = Room.new("Small room", 5, 10, [])
 
-    drinks = [@beer, @vodka, @wine]
+    drinks = [@beer, @vodka, @wine, @coke]
     food = [@pasta, @side]
     @bar = Bar.new("CodeClan Caraoke Bar", drinks, food)
 
@@ -91,23 +92,71 @@ class TestBar < MiniTest::Test
   def test_guest_can_buy_drink
     @big_room.checkin_guest(@bar, @guest2)
     @bar.serve_drink(@beer, @guest2)
-    assert_equal([@vodka, @wine], @bar.drinks_stock) # testing drink has been removed from bar's drink stock
-    assert_equal(10, @bar.till) # testing cost of drink has been added to till
+    assert_equal([@vodka, @wine, @coke], @bar.drinks_stock) # testing drink has been removed from bar's drink stock
+    assert_equal(10, @bar.till) # testing cost of drink has been added to bar till (not room till, which only takes in entry fee)
     assert_equal([@beer], @guest2.purchases) # testing drink has been added to guest's purchases
     assert_equal(10, @guest2.wallet) # testing correct money has been taken off guest (includes entry fee as checkin function called to create bar tab)
     assert_equal([{name: "Ahmed", tab: 20}], @bar.guest_tabs) # testing bar tab tracks guest spending (entry fee and drink purchase)
   end
 
-  # (test if it rejects customers too young, cant afford, drink doesn't exist)
-
   def test_guest_can_buy_food
     @big_room.checkin_guest(@bar, @guest2)
     @bar.serve_food(@pasta, @guest2)
     assert_equal([@side], @bar.food_stock) # testing food has been removed from stock
-    assert_equal(5, @bar.till) # testing cost of food has been added to till
+    assert_equal(5, @bar.till) # testing cost of food has been added to bar till (which doesn't take in entry fee)
     assert_equal([@pasta], @guest2.purchases) # testing food has been added to guest's purchases
     assert_equal(15, @guest2.wallet) # testing correct money has been taken off guest (includes entry fee)
     assert_equal([{name: "Ahmed", tab: 15}], @bar.guest_tabs) # testing bar tab tracks guest spending (entry fee and food purchase)
+  end
+
+  def test_guest_cannot_buy_food_that_is_not_in_stock
+    @big_room.checkin_guest(@bar, @guest2)
+    @bar.serve_food(@pasta, @guest2)
+    assert_equal([@side], @bar.food_stock)
+    assert_equal(5, @bar.till)
+    assert_equal([@pasta], @guest2.purchases)
+    assert_equal(15, @guest2.wallet)
+    assert_equal([{name: "Ahmed", tab: 15}], @bar.guest_tabs)
+  end
+
+  def test_guest_cannot_buy_alcoholic_drink_if_guest_too_young
+    @big_room.checkin_guest(@bar, @guest3)
+    @bar.serve_drink(@beer, @guest3)
+    assert_equal([@beer, @vodka, @wine, @coke], @bar.drinks_stock)
+    assert_equal(0, @bar.till)
+    assert_equal([], @guest3.purchases)
+    assert_equal(30, @guest3.wallet)
+    assert_equal([{name: "Archie", tab: 10}], @bar.guest_tabs)
+  end
+
+  def test_guest_cannot_buy_drink_if_guest_cannot_afford
+    @big_room.checkin_guest(@bar, @guest1) # guest 1 has enough money for entrance fee but no drink
+    @bar.serve_drink(@beer, @guest1)
+    assert_equal([@beer, @vodka, @wine, @coke], @bar.drinks_stock)
+    assert_equal(0, @bar.till)
+    assert_equal([], @guest1.purchases)
+    assert_equal(0, @guest1.wallet)
+    assert_equal([{name: "Richard", tab: 10}], @bar.guest_tabs)
+  end
+
+  def test_guest_cannot_buy_food_if_guest_cannot_afford
+    @big_room.checkin_guest(@bar, @guest1)
+    @bar.serve_food(@pasta, @guest1)
+    assert_equal([@pasta, @side], @bar.food_stock)
+    assert_equal(0, @bar.till)
+    assert_equal([], @guest1.purchases)
+    assert_equal(0, @guest1.wallet)
+    assert_equal([{name: "Richard", tab: 10}], @bar.guest_tabs)
+  end
+
+  def test_underage_guest_can_buy_non_alcoholic_drinks
+    @big_room.checkin_guest(@bar, @guest3)
+    @bar.serve_drink(@coke, @guest3)
+    assert_equal([@beer, @vodka, @wine], @bar.drinks_stock)
+    assert_equal(5, @bar.till)
+    assert_equal([@coke], @guest3.purchases)
+    assert_equal(25, @guest3.wallet)
+    assert_equal([{name: "Archie", tab: 15}], @bar.guest_tabs)
   end
 
 
