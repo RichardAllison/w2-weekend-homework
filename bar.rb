@@ -30,8 +30,8 @@ class Bar
 
   # Code for selling food and drinks below, so that tracking spending has something to track!
 
-  def find_drink_by_name(name)
-    return @drinks_stock.find { |drink| drink.name == name }
+  def find_drink_by_name(drink_name)
+    return @drinks_stock.find { |drink| drink.name == drink_name }
   end
 
   def find_food_by_name(food_name)

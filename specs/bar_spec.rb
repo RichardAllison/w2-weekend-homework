@@ -111,12 +111,12 @@ class TestBar < MiniTest::Test
 
   def test_guest_cannot_buy_food_that_is_not_in_stock
     @big_room.checkin_guest(@bar, @guest2)
-    @bar.serve_food(@pasta, @guest2)
-    assert_equal([@side], @bar.food_stock)
-    assert_equal(5, @bar.till)
-    assert_equal([@pasta], @guest2.purchases)
-    assert_equal(15, @guest2.wallet)
-    assert_equal([{name: "Ahmed", tab: 15}], @bar.guest_tabs)
+    @bar.serve_food(@food_not_in_stock, @guest2)
+    assert_equal([@pasta, @side], @bar.food_stock)
+    assert_equal(0, @bar.till)
+    assert_equal([], @guest2.purchases)
+    assert_equal(20, @guest2.wallet)
+    assert_equal([{name: "Ahmed", tab: 10}], @bar.guest_tabs)
   end
 
   def test_guest_cannot_buy_alcoholic_drink_if_guest_too_young
@@ -127,6 +127,16 @@ class TestBar < MiniTest::Test
     assert_equal([], @guest3.purchases)
     assert_equal(30, @guest3.wallet)
     assert_equal([{name: "Archie", tab: 10}], @bar.guest_tabs)
+  end
+
+  def test_underage_guest_can_buy_non_alcoholic_drinks
+    @big_room.checkin_guest(@bar, @guest3)
+    @bar.serve_drink(@coke, @guest3)
+    assert_equal([@beer, @vodka, @wine], @bar.drinks_stock)
+    assert_equal(5, @bar.till)
+    assert_equal([@coke], @guest3.purchases)
+    assert_equal(25, @guest3.wallet)
+    assert_equal([{name: "Archie", tab: 15}], @bar.guest_tabs)
   end
 
   def test_guest_cannot_buy_drink_if_guest_cannot_afford
@@ -149,15 +159,6 @@ class TestBar < MiniTest::Test
     assert_equal([{name: "Richard", tab: 10}], @bar.guest_tabs)
   end
 
-  def test_underage_guest_can_buy_non_alcoholic_drinks
-    @big_room.checkin_guest(@bar, @guest3)
-    @bar.serve_drink(@coke, @guest3)
-    assert_equal([@beer, @vodka, @wine], @bar.drinks_stock)
-    assert_equal(5, @bar.till)
-    assert_equal([@coke], @guest3.purchases)
-    assert_equal(25, @guest3.wallet)
-    assert_equal([{name: "Archie", tab: 15}], @bar.guest_tabs)
-  end
 
 
 end
