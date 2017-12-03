@@ -11,7 +11,7 @@ class TestBar < MiniTest::Test
 
   def setup
     @guest1 = Guest.new("Richard", 29, 10, "It won't go")
-    @guest2 = Guest.new("Ahmed", 32, 30, "Rockin' all over the world")
+    @guest2 = Guest.new("Ivan", 32, 30, "Rockin' all over the world")
     @guest3 = Guest.new("Archie", 17, 40, "Blueberry Hill")
 
     @beer = Drink.new("Budweiser", 10, "beer", 5)
@@ -45,7 +45,7 @@ class TestBar < MiniTest::Test
     @bar.create_guest_tab(@guest1, @big_room)
     @bar.create_guest_tab(@guest2, @big_room)
     @bar.create_guest_tab(@guest3, @big_room)
-    assert_equal([{name: "Richard", tab: 10},{name: "Ahmed", tab: 10},{name: "Archie", tab: 10}], @bar.guest_tabs)
+    assert_equal([{name: "Richard", tab: 10},{name: "Ivan", tab: 10},{name: "Archie", tab: 10}], @bar.guest_tabs)
   end
 
   def test_find_bar_tab_by_name
@@ -96,7 +96,7 @@ class TestBar < MiniTest::Test
     assert_equal(10, @bar.till) # testing cost of drink has been added to bar till (which doesn't take in entry fee)
     assert_equal([@beer], @guest2.purchases) # testing drink has been added to guest's purchases
     assert_equal(10, @guest2.wallet) # testing correct money has been taken off guest (includes entry fee as checkin function called to create bar tab)
-    assert_equal([{name: "Ahmed", tab: 20}], @bar.guest_tabs) # testing bar tab tracks guest spending (entry fee and drink purchase)
+    assert_equal([{name: "Ivan", tab: 20}], @bar.guest_tabs) # testing bar tab tracks guest spending (entry fee and drink purchase)
   end
 
   def test_guest_can_buy_food
@@ -106,7 +106,7 @@ class TestBar < MiniTest::Test
     assert_equal(5, @bar.till)
     assert_equal([@pasta], @guest2.purchases)
     assert_equal(15, @guest2.wallet)
-    assert_equal([{name: "Ahmed", tab: 15}], @bar.guest_tabs)
+    assert_equal([{name: "Ivan", tab: 15}], @bar.guest_tabs)
   end
 
   def test_guest_cannot_buy_food_that_is_not_in_stock
@@ -116,7 +116,7 @@ class TestBar < MiniTest::Test
     assert_equal(0, @bar.till)
     assert_equal([], @guest2.purchases)
     assert_equal(20, @guest2.wallet)
-    assert_equal([{name: "Ahmed", tab: 10}], @bar.guest_tabs)
+    assert_equal([{name: "Ivan", tab: 10}], @bar.guest_tabs)
   end
 
   def test_guest_cannot_buy_alcoholic_drink_if_guest_too_young

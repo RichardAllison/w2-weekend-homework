@@ -21,9 +21,9 @@ class TestRoom < MiniTest::Test
     @bar = Bar.new("CodeClan Caraoke Bar", [], [])
 
     @guest1 = Guest.new("Richard", 29, 20, "It won't go")
-    @guest2 = Guest.new("Ahmed", 32, 30, "Rockin' all over the world")
+    @guest2 = Guest.new("Ivan", 32, 30, "Rockin' all over the world")
     @guest3 = Guest.new("Archie", 17, 40, "Blueberry Hill")
-    @guest4 = Guest.new("Ivan", 29, 50, "If")
+    @guest4 = Guest.new("Ahmed", 29, 50, "If")
     @guest5 = Guest.new("Pedro", 23, 60, "School's out")
     @guest6 = Guest.new("Sean", 19, 5, "Bohemian Rhapsody")
     @guest7 = Guest.new("Rob", 40, 70, nil)
