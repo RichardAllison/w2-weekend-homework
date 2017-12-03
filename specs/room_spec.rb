@@ -14,10 +14,12 @@ class TestRoom < MiniTest::Test
     @song4 = Song.new("If","Bread")
     @song5 = Song.new("School's Out","Alice Cooper")
     songs = [@song1, @song2, @song4, @song5]
+
     @big_room = Room.new("Big room", 50, 10, songs)
     @small_room = Room.new("Small room", 5, 10, songs)
-    rooms = [@big_room, @small_room]
-    @bar = Bar.new("CodeClan Caraoke Bar", rooms)
+
+    @bar = Bar.new("CodeClan Caraoke Bar", [], [])
+
     @guest1 = Guest.new("Richard", 29, 20, "It won't go")
     @guest2 = Guest.new("Ahmed", 32, 30, "Rockin' all over the world")
     @guest3 = Guest.new("Archie", 17, 40, "Blueberry Hill")

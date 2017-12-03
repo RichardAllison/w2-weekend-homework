@@ -1,13 +1,11 @@
-require_relative("song.rb")
-
 class Room
 
   attr_reader :name, :capacity, :playlist, :guests, :entrance_fee, :till
-
+# ("Big room", 50, 10, songs)
   def initialize(name, capacity, entrance_fee, playlist)
     @name = name
     @capacity = capacity
-    @entrance_fee = entrance_fee.to_i
+    @entrance_fee = entrance_fee
     @playlist = playlist || []
     @guests = []
     @till = 0
