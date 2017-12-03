@@ -28,7 +28,7 @@ class Bar
     return @guest_tabs.find { |guest| guest[:name] == name }
   end
 
-  # Code for selling food and drinks below, so that tracking spending has something to track!
+  # Extra food and drink functions below
 
   def find_drink_by_name(drink_name)
     return @drinks_stock.find { |drink| drink.name == drink_name }

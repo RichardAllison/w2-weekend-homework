@@ -20,7 +20,7 @@ class TestBar < MiniTest::Test
     @coke = Drink.new("Coca Cola", 5, "soft drink", 0)
 
     @pasta = Food.new("Spaghetti", 5, "pasta")
-    @food_not_in_stock = Food.new("Sushi", 15, "sushi")
+    @sushi = Food.new("Sushi", 15, "sushi")
     @side = Food.new("Chips", 2, "side")
 
     @big_room = Room.new("Big room", 50, 10, [])
@@ -62,7 +62,7 @@ class TestBar < MiniTest::Test
   end
 
 
-  # testing extra food and drink functions below, added so track spending has something to track
+  # testing extra food and drink functions below
 
   def test_can_find_drink__true
     found_drink = @bar.find_drink_by_name("Budweiser")
@@ -93,7 +93,7 @@ class TestBar < MiniTest::Test
     @big_room.checkin_guest(@bar, @guest2)
     @bar.serve_drink(@beer, @guest2)
     assert_equal([@vodka, @wine, @coke], @bar.drinks_stock) # testing drink has been removed from bar's drink stock
-    assert_equal(10, @bar.till) # testing cost of drink has been added to bar till (not room till, which only takes in entry fee)
+    assert_equal(10, @bar.till) # testing cost of drink has been added to bar till (which doesn't take in entry fee)
     assert_equal([@beer], @guest2.purchases) # testing drink has been added to guest's purchases
     assert_equal(10, @guest2.wallet) # testing correct money has been taken off guest (includes entry fee as checkin function called to create bar tab)
     assert_equal([{name: "Ahmed", tab: 20}], @bar.guest_tabs) # testing bar tab tracks guest spending (entry fee and drink purchase)
@@ -102,16 +102,16 @@ class TestBar < MiniTest::Test
   def test_guest_can_buy_food
     @big_room.checkin_guest(@bar, @guest2)
     @bar.serve_food(@pasta, @guest2)
-    assert_equal([@side], @bar.food_stock) # testing food has been removed from stock
-    assert_equal(5, @bar.till) # testing cost of food has been added to bar till (which doesn't take in entry fee)
-    assert_equal([@pasta], @guest2.purchases) # testing food has been added to guest's purchases
-    assert_equal(15, @guest2.wallet) # testing correct money has been taken off guest (includes entry fee)
-    assert_equal([{name: "Ahmed", tab: 15}], @bar.guest_tabs) # testing bar tab tracks guest spending (entry fee and food purchase)
+    assert_equal([@side], @bar.food_stock)
+    assert_equal(5, @bar.till)
+    assert_equal([@pasta], @guest2.purchases)
+    assert_equal(15, @guest2.wallet)
+    assert_equal([{name: "Ahmed", tab: 15}], @bar.guest_tabs)
   end
 
   def test_guest_cannot_buy_food_that_is_not_in_stock
     @big_room.checkin_guest(@bar, @guest2)
-    @bar.serve_food(@food_not_in_stock, @guest2)
+    @bar.serve_food(@sushi, @guest2)
     assert_equal([@pasta, @side], @bar.food_stock)
     assert_equal(0, @bar.till)
     assert_equal([], @guest2.purchases)
@@ -140,7 +140,7 @@ class TestBar < MiniTest::Test
   end
 
   def test_guest_cannot_buy_drink_if_guest_cannot_afford
-    @big_room.checkin_guest(@bar, @guest1) # guest 1 has enough money for entrance fee but no drink
+    @big_room.checkin_guest(@bar, @guest1)
     @bar.serve_drink(@beer, @guest1)
     assert_equal([@beer, @vodka, @wine, @coke], @bar.drinks_stock)
     assert_equal(0, @bar.till)
